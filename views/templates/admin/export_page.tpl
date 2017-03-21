@@ -1,5 +1,5 @@
 {*
-* 2007-2015 PrestaShop
+* 2017 mpSOFT
 *
 * NOTICE OF LICENSE
 *
@@ -17,61 +17,13 @@
 * versions in the future. If you wish to customize PrestaShop for your
 * needs please refer to http://www.prestashop.com for more information.
 *
-*  @author PrestaShop SA <contact@prestashop.com>
-*  @copyright  2007-2016 PrestaShop SA
-*  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
-*  International Registered Trademark & Property of PrestaShop SA
+*  @author    mpSOFT <info@mpsoft.it>
+*  @copyright 2017 mpSOFT Massimiliano Palermo
+*  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+*  International Registered Trademark & Property of mpSOFT
 *}
 
 <script type="text/javascript">
-    function fnExportExcel(header,rows,filename) 
-    {
-        var tab_text = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
-        tab_text = tab_text + '<head><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>';
-
-        //tab_text = tab_text + '<x:Name>Test Sheet</x:Name>';
-
-        tab_text = tab_text + '<x:WorksheetOptions><x:Panes></x:Panes></x:WorksheetOptions></x:ExcelWorksheet>';
-        tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
-
-        tab_text = tab_text + "<table border='0'>";
-        tab_text = tab_text + header;
-        tab_text = tab_text + rows;
-        tab_text = tab_text + '</table></body></html>';
-
-        fnAjaxOpenFile(tab_text,filename);
-    }
-    
-    function downloadURL(url) 
-    {
-        var hiddenIFrameID = 'hiddenDownloader',
-            iframe = document.getElementById(hiddenIFrameID);
-        if (iframe === null) {
-            iframe = document.createElement('iframe');
-            iframe.id = hiddenIFrameID;
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
-        }
-        iframe.src = url;
-    };
-    
-    function fnAjaxOpenFile(content,filename)
-    {
-        $.ajax({
-            url: '../modules/mpsogetrasexport/ajax/prepareXLS.php',
-            data:
-                    {
-                        content: content,
-                        filename: filename
-                    },
-            type: 'POST',
-            success: function(msg)
-                    {
-                        window.location = msg;
-                    }
-        });
-    }
-    
     $(document).ready(function() 
     {
         $('.datepicker').datepicker("option", "showAnim", "slideDown");
@@ -86,15 +38,6 @@
                 //"<th colspan=\'6\'>{l s='SENDER' mod='mpsogetrasexport'}</th>" +
                 "<th colspan=\'11\'>{l s='SHIPPING' mod='mpsogetrasexport'}</th>"
                 );
-        
-    {if $export}
-        $("button[name='submit_form']").parent().prepend(
-                "<button id='btn-export' type='button' class='btn btn-default pull-right'>" +
-                "<i class='icon-save'></i>" +
-                "&nbsp;EXPORT" +
-                "</button>"
-                );
-    {/if}
         
         $("#btn-export").on("click",function()
         {
