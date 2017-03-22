@@ -24,6 +24,13 @@
  *  International Registered Trademark & Property of mpSOFT
  */
 
+if (!class_exists('PHPExcel')) {
+    require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . ".."
+        . DIRECTORY_SEPARATOR . ".."
+        . DIRECTORY_SEPARATOR . "classes"
+        . DIRECTORY_SEPARATOR . "PHPExcel.php";
+}
+
 class AdminMpSogetrasExportController extends ModuleAdminController 
 {
     private $selStateOrderOptions;
@@ -48,7 +55,7 @@ class AdminMpSogetrasExportController extends ModuleAdminController
             $this->_lang = Context::getContext()->language->id;
             $this->excel_filename = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' 
                 .DIRECTORY_SEPARATOR . '..'
-                .DIRECTORY_SEPARATOR . 'export.xls';
+                .DIRECTORY_SEPARATOR . 'export.xlt';
     }
 
     public function initToolbar()
@@ -439,17 +446,10 @@ class AdminMpSogetrasExportController extends ModuleAdminController
             }
             else
             {
-                $address->company = strtoupper($address->company);
+                $address->company = strtoupper($address->company) . ', ' . strtoupper($address->firstname . " " . $address->lastname);
             }
 
-            if(empty($customer->company))
-            {
-                $customer->company = strtoupper($customer->firstname . " " . $customer->lastname);
-            }
-            else
-            {
-                $customer->company = strtoupper($customer->company);
-            }
+            $customer->company = strtoupper($customer->firstname . " " . $customer->lastname);
 
             if(!empty($address->other))
             {
@@ -866,7 +866,7 @@ class AdminMpSogetrasExportController extends ModuleAdminController
         
         $excel->removeSheetByIndex();
         $excel->addSheet($sheet);
-
+                
         $objWriter = new PHPExcel_Writer_Excel5($excel);
         try {
             if (file_exists($this->excel_filename)) {
@@ -875,7 +875,7 @@ class AdminMpSogetrasExportController extends ModuleAdminController
             $objWriter->save($this->excel_filename); 
             chmod($this->excel_filename, 0775);
             
-            header("Location: ../modules/mpsogetrasexport/download.php?file=export.xls");
+            header("Location: ../modules/mpsogetrasexport/download.php?file=export.xlt");
             
             $this->messages[]['Excel Writer'] = [
                 'on' => true,
