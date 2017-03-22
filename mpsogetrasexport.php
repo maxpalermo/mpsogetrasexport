@@ -39,7 +39,6 @@ class MpSogetrasExport extends Module
         !Configuration::updateValue('MP_SOGETRAS_EXPORT_ID_CUSTOMER', '0') ||
         !Configuration::updateValue('MP_SOGETRAS_EXPORT_PACKAGE', '0') ||
         !Configuration::updateValue('MP_SOGETRAS_EXPORT_WEIGHT', '0') ||
-        !$this->extractClass() ||
         !$this->registerHook('displayBackOfficeHeader') ||
 	!$this->installTab()
       )
@@ -59,22 +58,6 @@ class MpSogetrasExport extends Module
         return false;
       }
       return true;
-    }
-    
-    public function extractClass()
-    {
-        $zip = new ZipArchive();
-        if ($zip->open(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'PHPExcel-1.8.zip') === TRUE) {
-            if ($zip->extractTo(_PS_CLASS_DIR_)) {
-                $zip->close();
-                return true;
-            } else {
-                $zip->close();
-                return false;
-            }
-        } else {
-            return false;
-        }
     }
     
     public function getContent()
